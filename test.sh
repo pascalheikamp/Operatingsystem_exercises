@@ -8,8 +8,8 @@ if [ -d "$DIR" ]; then
   # Take action if $DIR exists. #
     pip3 install -r requirements.txt --upgrade
     git describe --tags > passworder/version.txt
-    python3 -m unittest discover .
     echo "succesfull installed all requirements"
+    python3 -m unittest discover .
 output=$?
 if[$output == 0]; then
    echo "unit test was successfull!"
