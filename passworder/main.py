@@ -1,5 +1,6 @@
 import traceback
 import uvicorn
+import logging
 import yaml
 from typing import Optional
 
@@ -27,6 +28,19 @@ if not settings["openapi_console"]:
 app = FastAPI(**main_parameters)
 passworder = Passworder()
 
+Log_Format = "%(levelname)s %(asctime)s - %(message)s"
+
+logging.basicConfig(filename = "passworder.log",
+                    filemode = "w",
+                    format = Log_Format, 
+                    level = logging.DEBUG)
+
+logger = logging.getLogger()
+
+#Testing our Logger
+
+logger.error("Our First Log Message")
+
 
 @app.get("/encrypt/generators")
 async def generators_list():
@@ -45,6 +59,7 @@ async def show_version():
 
 @app.post("/encrypt/")
 async def encrypt(encrypt_request: EncryptRequest, request: Request):
+    logger.info(f"200 {request.client.host} {encrypt_request.algorithm}")
     result = {}
     print("Got a request from " + request.client.host)
     try:
